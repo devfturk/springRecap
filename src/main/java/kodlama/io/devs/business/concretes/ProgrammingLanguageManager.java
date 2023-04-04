@@ -1,11 +1,13 @@
 package kodlama.io.devs.business.concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlama.io.devs.business.abstracts.ProgrammingLanguageService;
+import kodlama.io.devs.business.responses.languageResponses.GetAllProgrammingLanguagesResponse;
 import kodlama.io.devs.dataAccess.abstracts.ProgrammingLanguageRepository;
 import kodlama.io.devs.entities.concretes.ProgrammingLanguage;
 
@@ -24,9 +26,21 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 	}
 
 	@Override
-	public List<ProgrammingLanguage> getAll() {
+	public List<GetAllProgrammingLanguagesResponse> getAll() {
 		
-		return programmingLanguageRepository.getAll();
+		List<ProgrammingLanguage> programmingLanguages = programmingLanguageRepository.findAll();
+        List<GetAllProgrammingLanguagesResponse> programmingLanguagesResponses = new ArrayList<>();
+        
+        for (ProgrammingLanguage programmingLanguage : programmingLanguages) {
+
+            GetAllProgrammingLanguagesResponse responseItem = new GetAllProgrammingLanguagesResponse();
+            responseItem.setId(programmingLanguage.getId());
+            responseItem.setName(programmingLanguage.getName());
+
+            programmingLanguagesResponses.add(responseItem);
+
+        }
+		return programmingLanguagesResponses;
 	}
 
 	@Override
@@ -35,18 +49,18 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 			System.out.println("Programlama dili boş geçemez.");
 			return;
 		}
-		for (ProgrammingLanguage programLanguage : programmingLanguageRepository.getAll()) {
+		for (ProgrammingLanguage programLanguage : programmingLanguageRepository.findAll()) {
 			if (programLanguage.getName().toUpperCase().equals(programLanguage.getName().toUpperCase())) {
 				System.out.println("Bu kurs sistemde zaten mevcut!");
 				return;
 			}
 		}
-		programmingLanguageRepository.add(programmingLanguage);
+		programmingLanguageRepository.save(programmingLanguage);
 	}
 
 	@Override
 	public void delete(ProgrammingLanguage programmingLanguage) {
-		
+
 		programmingLanguageRepository.delete(programmingLanguage);
 	}
 
@@ -57,9 +71,13 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 	}
 
 	@Override
-	public ProgrammingLanguage getById(int id) {
+	public GetAllProgrammingLanguagesResponse getById(int id) {
 		
-		return programmingLanguageRepository.getById(id);
+		GetAllProgrammingLanguagesResponse programmingLanguagesResponse = new GetAllProgrammingLanguagesResponse();
+        ProgrammingLanguage programmingLanguage = programmingLanguageRepository.findById(id).orElseThrow();
+        programmingLanguagesResponse.setName(programmingLanguage.getName());
+
+        return programmingLanguagesResponse;
 	}
 
 }

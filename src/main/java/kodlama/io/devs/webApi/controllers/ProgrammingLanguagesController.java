@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kodlama.io.devs.business.abstracts.ProgrammingLanguageService;
+import kodlama.io.devs.business.responses.languageResponses.GetAllProgrammingLanguagesResponse;
 import kodlama.io.devs.entities.concretes.ProgrammingLanguage;
 
 @RestController
@@ -26,7 +27,7 @@ public class ProgrammingLanguagesController {
 	}
 	
 	@GetMapping("/getall")
-	public List<ProgrammingLanguage> getAll(){
+	public List<GetAllProgrammingLanguagesResponse> getAll(){
 		return programmingLanguageService.getAll();
 	}
 	
@@ -46,9 +47,8 @@ public class ProgrammingLanguagesController {
 //		programmingLanguageService.update(course);
 //	}
 	@GetMapping("/{id}")
-	public ProgrammingLanguage getCourseById(@PathVariable int id) {
+	public GetAllProgrammingLanguagesResponse getCourseById(@PathVariable int id) {
 		return programmingLanguageService.getById(id);
 	}
-	
 	
 }
